@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ttskch\Tomorrow;
 
+use Cake\Chronos\Chronos;
 use PHPUnit\Framework\TestCase;
 
 class TomorrowTest extends TestCase
@@ -14,10 +15,7 @@ class TomorrowTest extends TestCase
 
     protected function setUp() : void
     {
-        $clock = $this->prophesize(Clock::class);
-        $clock->getDateTime()->willReturn(new \DateTime('2020-03-21'));
-
-        $this->tomorrow = new Tomorrow($clock->reveal());
+        $this->tomorrow = new Tomorrow();
     }
 
     public function testIsInstanceOfTomorrow() : void
@@ -28,6 +26,8 @@ class TomorrowTest extends TestCase
 
     public function testShow(): void
     {
+        Chronos::setTestNow('2020-03-21');
+
         ob_start();
         $this->tomorrow->show();
         $output = trim(ob_get_clean());
