@@ -5,8 +5,21 @@ namespace Ttskch\Tomorrow;
 
 class Tomorrow
 {
+    /**
+     * @var Clock
+     */
+    private $clock;
+
+    public function __construct(Clock $clock)
+    {
+        $this->clock = $clock;
+    }
+
     public function show(): void
     {
-        echo (new \DateTime('+1 day'))->format('Y/m/d') . PHP_EOL;
+        $now = $this->clock->getDateTime();
+        $tomorrow = $now->modify('+1 day');
+
+        echo $tomorrow->format('Y/m/d') . PHP_EOL;
     }
 }

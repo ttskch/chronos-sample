@@ -14,7 +14,10 @@ class TomorrowTest extends TestCase
 
     protected function setUp() : void
     {
-        $this->tomorrow = new Tomorrow;
+        $clock = $this->prophesize(Clock::class);
+        $clock->getDateTime()->willReturn(new \DateTime('2020-03-21'));
+
+        $this->tomorrow = new Tomorrow($clock->reveal());
     }
 
     public function testIsInstanceOfTomorrow() : void
@@ -29,7 +32,7 @@ class TomorrowTest extends TestCase
         $this->tomorrow->show();
         $output = trim(ob_get_clean());
 
-        // 2020/03/21 以外の日にテストを実行すると失敗する.
+        // 「現在」を「2020-03-21」でモックしているので、いつテストを実行してもパスする.
         $this->assertEquals('2020/03/22', $output);
     }
 }
