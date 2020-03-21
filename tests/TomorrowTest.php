@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Ttskch\Tomorrow;
@@ -22,5 +21,15 @@ class TomorrowTest extends TestCase
     {
         $actual = $this->tomorrow;
         $this->assertInstanceOf(Tomorrow::class, $actual);
+    }
+
+    public function testShow(): void
+    {
+        ob_start();
+        $this->tomorrow->show();
+        $output = trim(ob_get_clean());
+
+        // 2020/03/21 以外の日にテストを実行すると失敗する.
+        $this->assertEquals('2020/03/22', $output);
     }
 }
